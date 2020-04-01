@@ -84,6 +84,7 @@
                 else
                 {
                     swal(nameProduct, "is added to cart !", "success");
+                    $('.icon-header-item').attr('data-notify',data);                    //update data-notify number of the cart
                 }
 
             });

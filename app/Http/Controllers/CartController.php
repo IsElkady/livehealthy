@@ -25,15 +25,17 @@ class CartController extends Controller
         if($cartContent!=null)
         {
             return json_encode(false);
+
         }
         \Cart::add(["id"=>request()->id,"price"=>request()->price,"name"=>request()->ProductName,"quantity"=>1,"attributes"=>array(),"associatedModel"=>Product::class]);
-
+        $items=\Cart::getContent();
+        echo \Cart::getTotalQuantity();
     }
+
     public function destroy()
     {
         \Cart::remove(request()->ProductId);
         $items=\Cart::getContent();
-//        print_r($items);
         $cartItems="";
         foreach($items as $product)
         {
@@ -61,7 +63,8 @@ class CartController extends Controller
                                         '<td class="column-5">$'. $product->price.'</td>'.
                                     '</tr>';
         }
-        echo  $cartItems;
+        return $response=['cartItems'=>$cartItems,
+        'cartQuantity'=>\Cart::getTotalQuantity()];
     }
     public function empty()
     {

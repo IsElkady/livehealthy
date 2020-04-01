@@ -23,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('layout.cart',function($view){
+
+            $view->with('items',\Cart::getContent());
+
+        });
+
     }
 }

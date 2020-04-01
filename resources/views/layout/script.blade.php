@@ -99,3 +99,70 @@
 </script>
 <!--===============================================================================================-->
 <script src={{asset("js/main.js")}}></script>
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).ready(function(){
+
+        $('.js-show-cart').on('click',function(){
+            $.ajax({
+                url:"/showCartItems",
+                type:"get"
+            }).done(function(response){
+
+
+                $(".header-cart-content").remove();
+                $(".content").after(response);
+
+                //alert(response);
+                CartPScroll();           //to enable scroll in cart-menu
+                updateCart();
+            });
+
+        });
+
+        $(this).on('click','.header-cart-item-img',function(){
+            var ProductId=$(this).closest('.header-cart-item').attr('data-ProductId');
+            $.ajax({
+                url:'/rmvCartSideMenuProduct',
+                data:{"ProductId":ProductId},
+                type:"delete",
+            }).done(function(response){                 //remove items from cart
+
+
+                $('.header-cart-content').remove();
+                $('.content').after(response.cartItems);
+                $('.icon-header-item').attr('data-notify',response.cartQuantity);
+
+                CartPScroll();          //to enable scroll in cart-menu
+                updateCart();
+
+            });
+
+        });
+
+    });
+
+function CartPScroll()
+{
+    $('.js-pscroll').each(function(){
+        $(this).css('position','relative');
+        $(this).css('overflow','hidden');
+        var ps = new PerfectScrollbar(this, {
+            wheelSpeed: 1,
+            scrollingThreshold: 1000,
+            wheelPropagation: false,
+        });
+
+        $(window).on('resize', function(){
+            ps.update();
+        });
+    });
+}
+
+
+</script>

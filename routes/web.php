@@ -28,4 +28,8 @@ Route::post('/cart','CartController@store');
 
 Route::delete('/rmvCartProduct','CartController@destroy');
 
+Route::delete('/rmvCartSideMenuProduct','CartSideMenuController@destroy');
+
+Route::get('/showCartItems','CartSideMenuController@index');
+
 Route::get('empty','CartController@empty');
